@@ -17,15 +17,16 @@ class Game {
   }
 
   runGame() {
-    let numberOfPlayers = this.buildPlayers();
+    let playerResults = this.buildPlayers();
     console.log("Welcome " + this.playerOne.getName());
 
-    if (numberOfPlayers === 2) {
+    if (playerResults === 2) {
       console.log("Welcome " + this.playerTwo.getName());
-    } else if (numberOfPlayers === 1) {
+    } else if (playerResults === 1) {
       console.log("Welcome " + this.playerAi.getName());
     }
 
+    //Calling the game to run the gestures of the players
     this.playerOne.callGestures();
     console.log(this.playerOne + "gesture is: " + this.playerOne);
 
@@ -36,6 +37,7 @@ class Game {
     }
   }
 
+  //Building Player vs Player; Player vs AI
   buildPlayers() {
     let numberOfPlayers = prompt("How many players do you have?");
     let playerResults = parseInt(numberOfPlayers);
@@ -49,7 +51,7 @@ class Game {
       this.playerOne = new Human(prompt("What is the name of Player One?"));
       this.playerAi = new Ai();
     }
-    return numberOfPlayers;
+    return playerResults;
   }
 
   displayRules() {
@@ -64,10 +66,10 @@ class Game {
 
 //Player class
 class Player {
-  constructor() {
+  constructor(name) {
     this.score = 0;
-    this.name = null;
-    this.gesture = "";
+    this.name = name;
+    this.gesture;
   }
 
   callGestures() {
@@ -115,6 +117,15 @@ class Ai extends Player {
     let randomName = ["Abe", "Brittney", "Charles", "Davis", "Edward", "Frankie", "Gina", "Hanna"];
     let choosenName = Math.floor(Math.random() * randomName.length);
     super(randomName[choosenName]);
+
+  }
+
+  callGestures() {
+    this.gesture = [new gesture("rock"),
+    new gesture("paper"),
+    new gesture("scissor"),
+    new gesture("lizard"),
+    new gesture("spock")];
   }
 }
 
@@ -159,6 +170,7 @@ class Spock extends Gestures {
   }
 }
 
+//Input validation
 function promptFor(question, valid) {
   do {
     var response = prompt(question).trim();
