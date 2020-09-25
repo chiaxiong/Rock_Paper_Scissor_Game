@@ -28,12 +28,14 @@ class Game {
 
     //Calling the game to run the gestures of the players
     this.playerOne.callGestures();
-    console.log(this.playerOne + "gesture is: " + this.playerOne);
+    console.log(this.playerOne.getName() + " gesture is: " + this.playerOne.getGesture().getName());
 
-    if (numberOfPlayers === 2) {
-      console.log(this.playerTwo + "gesture is: " + this.playerTwo);
-    } else if (numberOfPlayers === 1) {
-      console.log(this.playerAi.getName() + "gesture is: " + this.playerAi);
+    if (playerResults === 2) {
+      this.playerTwo.callGestures();
+      console.log(this.playerTwo.getName() + " gesture is: " + this.playerTwo.getGesture().getName());
+    } else if (playerResults === 1) {
+      this.playerAi.callAiGestures()
+      console.log(this.playerAi.getName() + " gesture is: " + this.playerAi.getGesture().getName());
     }
   }
 
@@ -66,9 +68,9 @@ class Game {
 
 //Player class
 class Player {
-  constructor(name) {
+  constructor() {
     this.score = 0;
-    this.name = name;
+    this.name = null;
     this.gesture;
   }
 
@@ -102,7 +104,6 @@ class Player {
   getName() {
     return this.name;
   }
-
 }
 
 class Human extends Player {
@@ -115,17 +116,42 @@ class Human extends Player {
 class Ai extends Player {
   constructor() {
     let randomName = ["Abe", "Brittney", "Charles", "Davis", "Edward", "Frankie", "Gina", "Hanna"];
-    let choosenName = Math.floor(Math.random() * randomName.length);
+    let choosenName = Math.floor(Math.random() * randomName.length) + 1;
     super(randomName[choosenName]);
-
+    this.name = randomName[choosenName];
+    this.gesture;
   }
 
-  callGestures() {
-    this.gesture = [new gesture("rock"),
-    new gesture("paper"),
-    new gesture("scissor"),
-    new gesture("lizard"),
-    new gesture("spock")];
+  getGesture() {
+    return this.gesture;
+  }
+
+  callRandomGesture() {
+    this.gesture = callAiGestures();
+    return this.gesture;
+  }
+
+  callAiGestures() {
+    let listOfGestures = ["Rock", "Paper", "Scissor", "Lizard", "Spock"];
+
+    let gestureResult = Math.floor(Math.random() * listOfGestures.length) + 1;
+
+    if (gestureResult === 1) {
+      console.log("rock");
+      return gestureResult;
+    } else if (gestureResult === 2) {
+      console.log('paper');
+      return gestureResult;
+    } else if (gestureResult === 3) {
+      console.log('scissor');
+      return gestureResult;
+    } else if (gestureResult === 4) {
+      console.log('lizard');
+      return gestureResult;
+    } else if (gestureResult === 5) {
+      console.log('spock');
+      return gestureResult;
+    }
   }
 }
 
@@ -135,7 +161,7 @@ class Gestures {
     this.name = name;
   }
 
-  getGestureName() {
+  getName() {
     return this.name;
   }
 }
