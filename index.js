@@ -23,20 +23,21 @@ class Game {
     if (playerResults === 2) {
       console.log("Welcome " + this.playerTwo.getName());
     } else if (playerResults === 1) {
-      console.log("Welcome " + this.playerAi.getName());
+      console.log("Welcome " + this.playerTwo.getName());
     }
 
-    //Calling the game to run the gestures of the players
+    //Displaying to the console the gestures of the players
     this.playerOne.callGestures();
     console.log(this.playerOne.getName() + " gesture is: " + this.playerOne.getGesture().getName());
-
     if (playerResults === 2) {
       this.playerTwo.callGestures();
       console.log(this.playerTwo.getName() + " gesture is: " + this.playerTwo.getGesture().getName());
+      this.displayWinner(this.playerOne, this.playerTwo);
     } else if (playerResults === 1) {
-      this.playerAi.callAiGestures()
-      console.log(this.playerAi.getName() + " gesture is: " + this.playerAi.getGesture().getName());
+      this.playerTwo.callGestures()
+      console.log(this.playerTwo.getName() + " gesture is: " + this.playerTwo.getGesture().getName());
     }
+
   }
 
   //Building Player vs Player; Player vs AI
@@ -51,7 +52,7 @@ class Game {
     }
     else if (playerResults === 1) {
       this.playerOne = new Human(prompt("What is the name of Player One?"));
-      this.playerAi = new Ai();
+      this.playerTwo = new Ai();
     }
     return playerResults;
   }
@@ -61,8 +62,70 @@ class Game {
     console.log("Best of three is the winner");
   }
 
-  displayWinner() {
+  displayWinner(playerOne, playerTwo) {
+    if (playerOne.getGesture().getName() === playerTwo.getGesture().getName()) {
+      console.log("You tied.");
+    } else {
+      switch (playerOne.getGesture().getName(), playerTwo.getGesture().getName()) {
+        case "rock":
+          if (playerTwo.getGesture().getName() === "scissor" ||
+            playerTwo.getGesture().getName() === "lizard") {
+            this.playerOne.score++;
+            console.log("You Win " + this.playerOne.getName());
+          } else if (playerTwo.getGesture().getName() === "spock" ||
+            playerTwo.getGesture().getName() === "paper") {
+            this.playerTwo.score++;
+            console.log("You Win " + this.playerTwo.getName());
+          }
+        case "scissor":
+          if (playerTwo.getGesture().getName() === "paper"
+            || playerTwo.getGesture().getName() === "lizard") {
+            this.playerOne.score++;
+            console.log("You Win " + this.playerOne.getName());
+          } else if (playerTwo.getGesture().getName() === "spock") {
+            this.playerTwo.score++;
+            console.log("You Win " + this.playerTwo.getName());
+          }
+        case "paper":
+          if (playerTwo.getGesture().getName() === "rock"
+            || playerTwo.getGesture().getName() === "spock") {
+            this.playerOne.score++;
+            console.log("You Win " + this.playerOne.getName());
+          } else if (playerTwo.getGesture().getName() === "scissor" ||
+            playerTwo.getGesture().getName() === "lizard") {
+            this.playerTwo.score++;
+            console.log("You Win " + this.playerTwo.getName());
+          }
+        case "lizard":
+          if (playerTwo.getGesture().getName() === "spock"
+            || playerTwo.getGesture().getName() === "paper") {
+            this.playerOne.score++;
+            console.log("You Win " + this.playerOne.getName());
+          } else if (playerTwo.getGesture().getName() === "rock" ||
+            playerTwo.getGesture().getName() === "scissor") {
+            this.playerTwo.score++;
+            console.log("You Win " + this.playerTwo.getName());
+          }
+        case "spock":
+          if (playerTwo.getGesture().getName() === "rock"
+            || playerTwo.getGesture().getName() === "scissors") {
+            this.playerOne.score++;
+            console.log("You Win " + this.playerOne.getName());
+          } else if (playerTwo.getGesture().getName() === "rock" ||
+            playerTwo.getGesture().getName() === "lizard") {
+            this.playerTwo.score++;
+            console.log("You Win " + this.playerTwo.getName());
+          }
+      }
+    }
+  }
 
+  displayGameOver(playerOne, playerTwo) {
+    if (playerOne.score > playerTwo.score) {
+      console.log(this.playerOne.getName() + " won!");
+    } else if (playerOne.score < playerTwo.score) {
+      console.log(this.playerTwo.getName() + " won!");
+    }
   }
 }
 
@@ -127,30 +190,29 @@ class Ai extends Player {
   }
 
   callRandomGesture() {
-    this.gesture = callAiGestures();
+    this.gesture = callGestures();
     return this.gesture;
   }
 
-  callAiGestures() {
-    let listOfGestures = ["Rock", "Paper", "Scissor", "Lizard", "Spock"];
-
-    let gestureResult = Math.floor(Math.random() * listOfGestures.length) + 1;
+  callGestures() {
+    this.listOfGestures = ["rock", "paper", "scissor", "lizard", "spock"];
+    let gestureResult = Math.floor(Math.random() * this.listOfGestures.length) + 1;
 
     if (gestureResult === 1) {
       console.log("rock");
-      return gestureResult;
+      return new Rock("rock");
     } else if (gestureResult === 2) {
-      console.log('paper');
-      return gestureResult;
+      console.log("paper");
+      return new Paper("paper");
     } else if (gestureResult === 3) {
-      console.log('scissor');
-      return gestureResult;
+      console.log("scissor");
+      return new Scissor("scissor");
     } else if (gestureResult === 4) {
-      console.log('lizard');
-      return gestureResult;
+      console.log("lizard");
+      return new Lizard("lizard");
     } else if (gestureResult === 5) {
-      console.log('spock');
-      return gestureResult;
+      console.log("spock");
+      return new Spock("spock");
     }
   }
 }
