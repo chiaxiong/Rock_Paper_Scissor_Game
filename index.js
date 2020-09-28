@@ -134,8 +134,8 @@ class Game {
   //End of game
   displayGameOver() {
     while (this.playerOne.score < 3 && this.playerTwo.score < 3) {
-      let playerOneTotal = this.playerOne.callGestures();
-      let playerTwoTotal = this.playerTwo.callGestures();
+      let playerOneTotal = this.playerOne.score;
+      let playerTwoTotal = this.playerTwo.score;
 
       if (playerOneTotal > playerTwoTotal) {
         this.playerOne.score++;
@@ -209,12 +209,12 @@ class Ai extends Player {
   }
 
   callGestures() {
-    this.listOfGestures = ["rock", "paper", "scissor", "lizard", "spock"];
-    let gestureResult = Math.floor(Math.random() * this.listOfGestures.length) + 1;
+    let listOfGestures = ["rock", "paper", "scissor", "lizard", "spock"];
+    let gestureResult = Math.floor(Math.random() * listOfGestures.length) + 1;
 
     if (gestureResult === 1) {
       console.log("rock");
-      return this.Rock("rock");
+      return new Rock("rock");
     } else if (gestureResult === 2) {
       console.log("paper");
       return new Paper("paper");
